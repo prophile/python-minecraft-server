@@ -3,6 +3,10 @@ import sys
 import subprocess
 
 class Server:
+
+    def __init__( self ):
+        pass
+
     
     """
     Starts the minecraft server
