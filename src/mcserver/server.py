@@ -35,6 +35,13 @@ class Server:
             if e.errno != errno.EEXIST:
                 raise
 
+        os.chdir( directory )
+
+        if not os.path.exists( 'server.propertities' ):
+            print "First run"
+        else:
+            print "Not first run"
+
     """
     Stops the minecraft server
     """
