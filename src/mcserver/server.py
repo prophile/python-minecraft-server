@@ -14,7 +14,7 @@ class Server:
     def start( self ):
         self.first_run()
 
-        subprocess.Popen( 'sleep 20 && echo done', shell=True )
+        self._mcp = subprocess.Popen( 'java -jar minecraft_server.jar', shell=True )
         while True:
             try:
                 input = sys.stdin.readline()
@@ -47,13 +47,15 @@ class Server:
     """
     def stop( self, value=0 ):
         sys.stdout.write( 'Shutting down server...' )
+        self._mcp.communicate( 'stop' )
+        self._mcp.wait()
         sys.exit( value )
 
     """
     Sends a command to the minecraft server
     """
     def send( self, message ):
-        sys.stdout.write( message )
+        self._mcp.communicate( message )
 
 if __name__ == "__main__":
     server = Server()
