@@ -106,17 +106,42 @@ class Server:
         print ( "Current dir: ", os.getcwd() )
         if not os.path.exists( self.server_jar ):
             sys.stderr.write( 'Error: ' + self.server_jar + ' does not exist' )
-            return false
-        return true
+            return False
+        return True
 
-    def process_input( input ):
-        if input == 'stop':
-            stop()
+    def process_input( self, input ):
+        input = input.strip()
+        print( "Input: " + input )
+        if input == 'start':
+            self.start()
+        elif input == 'stop':
+            self.stop()
         elif input == 'quit':
-            quit()
+            self.quit()
+        elif input == 'upgrade':
+            self.stop()
+            self.upgrade()
         else:
-            send( input )
+            print( "Input not reconised, sending to mincraft server" )
+            self.send( input )
+
+    def upgrade( self ):
+        url = 'http://www.minecraft.net/download/minecraft_server.jar'
+        try:
+            f = urllib.request.urlopen( url )
+            print( "Downloading minecraft server" )
+
+            local = open( self.server_jar, "wb" )
+            local.write( f.read() )
+        
+        #handle errors
+        except HTTPError as e:
+                print("HTTP Error:",e.code , url)
+        except URLError as e:
+                print("URL Error:",e.reason , url)
+        finally:
+            local.close()
 
 if __name__ == "__main__":
     server = Server()
-    server.start()
+    server.main_loop()
