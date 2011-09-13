@@ -30,6 +30,8 @@ class Server:
         self.server_jar = 'minecraft_server.jar'
         self._mcp = None
 
+        self.first_run()
+
     def main_loop( self ):
         while True:
             try:
@@ -48,12 +50,12 @@ class Server:
             sys.stderr.write( 'Error: Server already running' )
             return
 
-        self.first_run()
-
         if not self.check_jar():
             return
 
+        print( "Starting minecraft server" )
         self._mcp = subprocess.Popen( 'java ' + self.arguments + ' -jar ' + self.server_jar, shell=True )
+        
 
     """
     Checks for the first run and sets up anything that needs to be set up
@@ -127,12 +129,14 @@ class Server:
 
     def upgrade( self ):
         url = 'http://www.minecraft.net/download/minecraft_server.jar'
+        local = None
         try:
             f = urllib.request.urlopen( url )
             print( "Downloading minecraft server" )
 
             local = open( self.server_jar, "wb" )
             local.write( f.read() )
+            print( "Downloading completed" )
         
         #handle errors
         except HTTPError as e:
