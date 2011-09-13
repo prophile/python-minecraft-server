@@ -22,6 +22,7 @@ import os, errno
 import sys
 import subprocess
 import urllib.request
+import config
 
 class Server:
 
@@ -34,8 +35,10 @@ class Server:
 
     def main_loop( self ):
         while True:
+            print("looping")
             try:
                 input = sys.stdin.readline()
+                print( "read:", input )
                 if input:
                     self.process_input( input )
             except KeyboardInterrupt:
@@ -54,7 +57,8 @@ class Server:
             return
 
         print( "Starting minecraft server" )
-        self._mcp = subprocess.Popen( 'java ' + self.arguments + ' -jar ' + self.server_jar, shell=True )
+        self._mcp = subprocess.Popen( config.java_exec + " " + config.java_flags + ' -jar ' + self.server_jar + " nogui", shell=True, stdin=subprocess.PIPE )
+        print( config.java_exec + ' ' + config.java_flags + ' -jar ' + self.server_jar + ' nogui' )
         
 
     """
@@ -85,7 +89,7 @@ class Server:
             sys.stderr.write( 'Server not running' )
             return
         sys.stdout.write( 'Shutting down server...' )
-        self._mcp.communicate( 'stop' )
+        self.send( 'stop' )
         self._mcp.wait()
         self._mcp = None
 
@@ -102,7 +106,7 @@ class Server:
     def send( self, message ):
         if self._mcp == None:
             return
-        self._mcp.communicate( message )
+        self._mcp.stdin.write( message.encode('latin-1') )
 
     def check_jar( self ):
         print ( "Current dir: ", os.getcwd() )
@@ -117,6 +121,7 @@ class Server:
         if input == 'start':
             self.start()
         elif input == 'stop':
+            print("Stopppign")
             self.stop()
         elif input == 'quit':
             self.quit()
