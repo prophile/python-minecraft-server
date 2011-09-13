@@ -21,36 +21,39 @@ Copyright (C) 2011 Michael Daffin
 import os, errno
 import sys
 import subprocess
+import urllib.request
 
 class Server:
 
     def __init__( self ):
         self.arguments = 'nogui'
         self.server_jar = 'minecraft_server.jar'
-        self.running = False
+        self._mcp = None
+
+    def main_loop( self ):
+        while True:
+            try:
+                input = sys.stdin.readline()
+                if input:
+                    self.process_input( input )
+            except KeyboardInterrupt:
+                self.quit()
+
     
     """
     Starts the minecraft server
     """
     def start( self ):
-        if self.running:
+        if self._mcp != None:
             sys.stderr.write( 'Error: Server already running' )
             return
 
         self.first_run()
 
-        if !check_jar():
+        if not self.check_jar():
             return
 
         self._mcp = subprocess.Popen( 'java ' + self.arguments + ' -jar ' + self.server_jar, shell=True )
-        self.running = True
-        while True:
-            try:
-                input = sys.stdin.readline()
-                if input:
-                    self.send(input)
-            except KeyboardInterrupt:
-                self.stop()
 
     """
     Checks for the first run and sets up anything that needs to be set up
@@ -60,41 +63,48 @@ class Server:
 
         try:
             os.mkdir( directory )
-        except OSError, e:
+        except OSError as e:
             if e.errno != errno.EEXIST:
                 raise
 
         os.chdir( directory )
 
         if not os.path.exists( 'server.propertities' ):
-            print "First run"
+            print( "First run" )
         else:
-            print "Not first run"
+            print( "Not first run" )
 
     """
     Stops the minecraft server
     """
     def stop( self ):
+        print( self._mcp )
+        if self._mcp == None:
+            sys.stderr.write( 'Server not running' )
+            return
         sys.stdout.write( 'Shutting down server...' )
         self._mcp.communicate( 'stop' )
         self._mcp.wait()
-        self.running = False
+        self._mcp = None
 
     """
     Stops the minecraft server then exits
     """
     def quit( self, value=0):
-        stop()
+        self.stop()
         sys.exit( value )
 
     """
     Sends a command to the minecraft server
     """
     def send( self, message ):
+        if self._mcp == None:
+            return
         self._mcp.communicate( message )
 
-    def check_jar():
-        if !os.path.exists( self.server_jar ):
+    def check_jar( self ):
+        print ( "Current dir: ", os.getcwd() )
+        if not os.path.exists( self.server_jar ):
             sys.stderr.write( 'Error: ' + self.server_jar + ' does not exist' )
             return false
         return true
