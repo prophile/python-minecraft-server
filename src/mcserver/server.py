@@ -45,10 +45,10 @@ class Server:
 
     def main_loop( self ):
         while True:
-            print("looping")
+            sys.stdout.write( '->' )
+            sys.stdout.flush()
             try:
                 input = sys.stdin.readline()
-                print( "read:", input )
                 if input:
                     self.process_input( input )
             except KeyboardInterrupt:
@@ -129,7 +129,6 @@ class Server:
 
     def process_input( self, input ):
         input = input.strip()
-        print( "Input: " + input )
         if input == 'start':
             self.start()
         elif input == 'stop':
