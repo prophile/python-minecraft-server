@@ -26,9 +26,20 @@ import config
 
 class Server:
 
+    def help( self ):
+        print( "Version: DEVELOPMENT PREVIEW" )
+        print( "help    - Displays this message" )
+        print( "help mc - Displays minecrafts help" )
+        print( "start   - Starts the minecraft server" )
+        print( "stop    - Stops the minecraft server" )
+        print( "upgrade - Upgrades the minecraft server" )
+
     def __init__( self ):
         self.server_jar = 'minecraft_server.jar'
         self._mcp = None
+
+        print( "Welcome to the minecraft python wrapper" )
+        print( "Type 'help' for help" )
 
         self.first_run()
 
@@ -128,6 +139,13 @@ class Server:
             self.quit()
         elif input == 'upgrade':
             self.upgrade()
+        elif input == 'help':
+            self.help()
+        elif input == 'help mc':
+            if not self._mcp:
+                sys.stderr.write( 'Server must be running to display help\n' )
+            else:
+                self.send( 'help' )
         else:
             print( "Input not reconised, sending to mincraft server" )
             self.send( input )
