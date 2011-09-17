@@ -27,7 +27,6 @@ import config
 class Server:
 
     def __init__( self ):
-        self.arguments = 'nogui'
         self.server_jar = 'minecraft_server.jar'
         self._mcp = None
 
@@ -50,7 +49,7 @@ class Server:
     """
     def start( self ):
         if self._mcp != None:
-            sys.stderr.write( 'Error: Server already running' )
+            sys.stderr.write( 'Error: Server already running\n' )
             return
 
         if not self.check_jar():
@@ -58,7 +57,6 @@ class Server:
 
         print( "Starting minecraft server" )
         self._mcp = subprocess.Popen( config.java_exec + " " + config.java_flags + ' -jar ' + self.server_jar + " nogui", shell=True, stdin=subprocess.PIPE )
-        print( config.java_exec + ' ' + config.java_flags + ' -jar ' + self.server_jar + ' nogui' )
         
 
     """
@@ -86,9 +84,9 @@ class Server:
     def stop( self ):
         print( self._mcp )
         if self._mcp == None:
-            sys.stderr.write( 'Server not running' )
+            sys.stderr.write( 'Server not running\n' )
             return
-        sys.stdout.write( 'Shutting down server...' )
+        sys.stdout.write( 'Shutting down server...\n' )
         self.send( 'stop' )
         self._mcp.wait()
         self._mcp = None
@@ -114,7 +112,7 @@ class Server:
     def check_jar( self ):
         print ( "Current dir: ", os.getcwd() )
         if not os.path.exists( self.server_jar ):
-            sys.stderr.write( 'Error: ' + self.server_jar + ' does not exist' )
+            sys.stderr.write( 'Error: ' + self.server_jar + ' does not exist\n' )
             return False
         return True
 
@@ -129,22 +127,25 @@ class Server:
         elif input == 'quit':
             self.quit()
         elif input == 'upgrade':
-            self.stop()
             self.upgrade()
         else:
             print( "Input not reconised, sending to mincraft server" )
             self.send( input )
 
     def upgrade( self ):
-        url = 'http://www.minecraft.net/download/minecraft_server.jar'
+        if self._mcp:
+            sys.stderr.write( 'Error: Server is running, please shut it down before upgradeing\n' )
+            return
+        url = config.url['offical']
         local = None
         try:
+            sys.stdout.write( "Downloading minecraft server..." )
+            sys.stdout.flush()
             f = urllib.request.urlopen( url )
-            print( "Downloading minecraft server" )
 
             local = open( self.server_jar, "wb" )
             local.write( f.read() )
-            print( "Downloading completed" )
+            print( " done" )
         
         #handle errors
         except HTTPError as e:
