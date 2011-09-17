@@ -106,7 +106,10 @@ class Server:
     def send( self, message ):
         if self._mcp == None:
             return
+        message += '\n'
         self._mcp.stdin.write( message.encode('latin-1') )
+        self._mcp.stdin.flush()
+        #seld._mcp.stdin.close()
 
     def check_jar( self ):
         print ( "Current dir: ", os.getcwd() )
