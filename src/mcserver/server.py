@@ -154,10 +154,10 @@ class Server:
         if self._mcp:
             sys.stderr.write( 'Error: Server is running, please shut it down before upgradeing\n' )
             return
-        url = config.url['offical']
+        url = config.url[ config.server_type ]
         local = None
         try:
-            sys.stdout.write( "Downloading minecraft server..." )
+            sys.stdout.write( "Downloading minecraft server from " + url + "..." )
             sys.stdout.flush()
             f = urllib.request.urlopen( url )
 
@@ -166,12 +166,11 @@ class Server:
             print( " done" )
         
         #handle errors
-        except HTTPError as e:
-                print("HTTP Error:",e.code , url)
-        except URLError as e:
+        except urllib.URLError as e:
                 print("URL Error:",e.reason , url)
         finally:
-            local.close()
+            if local:
+                local.close()
 
 if __name__ == "__main__":
     server = Server()
