@@ -84,7 +84,7 @@ class Server:
 
         os.chdir( directory )
 
-        if not os.path.exists( 'server.propertities' ):
+        if os.path.exists( 'server.propertities' ):
             print( "First run" )
         else:
             print( "Not first run" )
