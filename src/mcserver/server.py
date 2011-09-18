@@ -23,6 +23,8 @@ import sys
 import subprocess
 import urllib.request
 import config
+import threading
+import re
 
 class Server:
 
@@ -45,7 +47,7 @@ class Server:
 
     def main_loop( self ):
         while True:
-            sys.stdout.write( '->' )
+            sys.stdout.write( '\r>' )
             sys.stdout.flush()
             try:
                 input = sys.stdin.readline()
@@ -54,7 +56,14 @@ class Server:
             except KeyboardInterrupt:
                 self.quit()
 
-    
+    def _mc_output_loop( self ):
+        while self._mcp:
+            line = self._mcp.stdout.readline()
+            string = line.decode( "utf-8" )
+            if re.search( "^>\\r", string ):
+                sys.stdout.write( string )
+                sys.stdout.flush()
+
     """
     Starts the minecraft server
     """
@@ -67,7 +76,10 @@ class Server:
             return
 
         print( "Starting minecraft server" )
-        self._mcp = subprocess.Popen( config.java_exec + " " + config.java_flags + ' -jar ' + self.server_jar + " nogui", shell=True, stdin=subprocess.PIPE )
+        self._mcp = subprocess.Popen( config.java_exec + " " + config.java_flags + ' -jar ' + self.server_jar + " nogui", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+
+        self._mcp_reader = threading.Thread( target=self._mc_output_loop )
+        self._mcp_reader.start()
         
 
     """
@@ -101,6 +113,8 @@ class Server:
         self.send( 'stop' )
         self._mcp.wait()
         self._mcp = None
+        self._mcp_reader.join()
+        self._mcp_reader = None
 
     """
     Stops the minecraft server then exits
@@ -146,7 +160,7 @@ class Server:
             else:
                 self.send( 'help' )
         else:
-            print( "Input not reconised, sending to mincraft server" )
+            print( "Command not reconised, sending to mincraft server" )
             self.send( input )
 
     def upgrade( self ):
