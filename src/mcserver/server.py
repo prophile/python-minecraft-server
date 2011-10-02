@@ -26,7 +26,7 @@ import config
 import threading
 import re
 
-class Server:
+class MCProcess:
 
     def help( self ):
         print( "Version: DEVELOPMENT PREVIEW" )
@@ -186,5 +186,5 @@ class Server:
                 local.close()
 
 if __name__ == "__main__":
-    server = Server()
-    server.main_loop()
+    p = MCProcess()
+    p.main_loop()
