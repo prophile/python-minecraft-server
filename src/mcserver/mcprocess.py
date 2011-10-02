@@ -132,7 +132,6 @@ class MCProcess:
         message += '\n'
         self._mcp.stdin.write( message.encode('latin-1') )
         self._mcp.stdin.flush()
-        #seld._mcp.stdin.close()
 
     def check_jar( self ):
         print ( "Current dir: ", os.getcwd() )
@@ -141,27 +140,27 @@ class MCProcess:
             return False
         return True
 
-    def process_input( self, input ):
-        input = input.strip()
-        if input == 'start':
+    def process_input( self, user_input ):
+        user_input = user_input.strip()
+        if user_input == 'start':
             self.start()
-        elif input == 'stop':
+        elif user_input == 'stop':
             print("Stopppign")
             self.stop()
-        elif input == 'quit':
+        elif user_input == 'quit':
             self.quit()
-        elif input == 'upgrade':
+        elif user_input == 'upgrade':
             self.upgrade()
-        elif input == 'help':
+        elif user_input == 'help':
             self.help()
-        elif input == 'help mc':
+        elif user_input == 'help mc':
             if not self._mcp:
                 sys.stderr.write( 'Server must be running to display help\n' )
             else:
                 self.send( 'help' )
         else:
             print( "Command not reconised, sending to mincraft server" )
-            self.send( input )
+            self.send( user_input )
 
     def upgrade( self ):
         if self._mcp:
