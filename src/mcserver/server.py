@@ -28,13 +28,13 @@ class Server:
     buf  = 1024
     addr = (host,port)
 
-    def __init__( self, daemon = True ):
+    def __init__( self, daemon = True, message = None ):
         self.sock = socket.socket( socket.AF_INET, socket.SOCK_DGRAM )
 
         if daemon:
             self.daemonize()
         else:
-            self.clientize()
+            self.sendmessage( message )
 
         self.sock.close()
     
@@ -45,23 +45,19 @@ class Server:
         while True:
             data,self.addr = self.sock.recvfrom( self.buf )
             data = data.decode( 'utf-8' )
-            print( "Data: " + data )
             if data:
                 self.mcprocess.process_input( data )
             if data == "quit":
                 break
 
-    def clientize( self ):
-        while True:
-            data = input( '>> ' )
-            if self.sock.sendto( data.encode( 'utf-8' ), self.addr ):
-                print( "Sending message" )
-            else:
-                print( "Failed to send" )
+    def sendmessage( self, message ):
+        if not self.sock.sendto( message.encode( 'utf-8' ), self.addr ):
+            print( "Error, could not send message" )
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2 and sys.argv[1] == "-d":
-        s = Server()
-    else:
-        s = Server( False )
+    if len(sys.argv) >= 2:
+        if sys.argv[1] == "-d":
+            s = Server()
+        else:
+            s = Server( False, message = sys.argv[1] )
