@@ -22,6 +22,7 @@ import os, errno
 import sys
 import subprocess
 import urllib.request
+from urllib.error import HTTPError, URLError
 import config
 import threading
 import re
@@ -178,8 +179,10 @@ class MCProcess:
             print( " done" )
         
         #handle errors
-        except urllib.URLError as e:
-                print("URL Error:",e.reason , url)
+        except HTTPError as e:
+            print( "HTTP Error:", e.reason, url )
+        except URLError as e:
+            print( "URL Error:", e.reason, url )
         finally:
             if local:
                 local.close()
