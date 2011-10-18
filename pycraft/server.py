@@ -61,8 +61,12 @@ class Server:
         while True:
             data,addr = self.sock.recvfrom( self.buf )
             data = data.decode( 'utf-8' )
-            if data:
-                self.mcprocess.process_input( data )
+
+            if not data:
+                print( "No data recieved from connection from", addr )
+                continue
+
+            self.mcprocess.process_input( data )
             if not self.sock.sendto( "reieved".encode( 'utf-8' ), addr ):
                 print( "Error, could not send message" )
             if data == "quit":
