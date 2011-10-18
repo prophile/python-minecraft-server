@@ -23,12 +23,23 @@ import sys
 import mcprocess
 
 class Server:
+    """
+    Handels running the server as a deamon and sending messages to the deamon
+    and sending messages to the deamon as a client.
+    """
+
     host = 'localhost'
     port = 54545
     buf  = 1024
     addr = (host,port)
 
     def __init__( self, message = None ):
+        """
+        Starts the server in daemon mode or sends a message to the server.
+
+        @message: the message to send to the server, if None then start the
+                  server as a daemon
+        """
         self.sock = socket.socket( socket.AF_INET, socket.SOCK_DGRAM )
 
         if not message:
@@ -39,6 +50,11 @@ class Server:
         self.sock.close()
     
     def daemonize( self ):
+        """
+        Starts the daemon and waits for the client to tell it what to do.
+        Acts as a layer between the client and the mcprocess passing messages
+        back and forth.
+        """
         self.sock.bind(self.addr)
         self.mcprocess = mcprocess.MCProcess()
 
@@ -53,6 +69,11 @@ class Server:
                 break
 
     def sendmessage( self, message ):
+        """
+        Send a message to the server.
+
+        @message: the message to send to the server
+        """
         if not self.sock.sendto( message.encode( 'utf-8' ), self.addr ):
             print( "Error, could not send message" )
             return
