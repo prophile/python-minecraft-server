@@ -47,12 +47,18 @@ class Server:
             data = data.decode( 'utf-8' )
             if data:
                 self.mcprocess.process_input( data )
+            if not self.sock.sendto( "reieved".encode( 'utf-8' ), addr ):
+                print( "Error, could not send message" )
             if data == "quit":
                 break
 
     def sendmessage( self, message ):
         if not self.sock.sendto( message.encode( 'utf-8' ), self.addr ):
             print( "Error, could not send message" )
+            return
+        data,self.addr = self.sock.recvfrom( self.buf ) #TODO timeout
+        data = data.decode( 'utf-8' )
+        print( data )
 
 
 if __name__ == "__main__":
