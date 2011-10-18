@@ -43,7 +43,7 @@ class Server:
         self.mcprocess = mcprocess.MCProcess()
 
         while True:
-            data,self.addr = self.sock.recvfrom( self.buf )
+            data,addr = self.sock.recvfrom( self.buf )
             data = data.decode( 'utf-8' )
             if data:
                 self.mcprocess.process_input( data )
