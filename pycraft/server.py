@@ -67,3 +67,5 @@ if __name__ == "__main__":
             s = Server()
         else:
             s = Server( message = sys.argv[1] )
+    else:
+        print( "Thats not how you use this program!!" )
