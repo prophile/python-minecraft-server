@@ -28,10 +28,10 @@ class Server:
     buf  = 1024
     addr = (host,port)
 
-    def __init__( self, daemon = True, message = None ):
+    def __init__( self, message = None ):
         self.sock = socket.socket( socket.AF_INET, socket.SOCK_DGRAM )
 
-        if daemon:
+        if not message:
             self.daemonize()
         else:
             self.sendmessage( message )
@@ -66,4 +66,4 @@ if __name__ == "__main__":
         if sys.argv[1] == "-d":
             s = Server()
         else:
-            s = Server( False, message = sys.argv[1] )
+            s = Server( message = sys.argv[1] )
