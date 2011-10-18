@@ -1,0 +1,16 @@
+PythonCraft
+===========
+
+Installation
+============
+python ...
+
+Usage
+=====
+To start the server run:
+python server.py -d
+
+To send commands to the server:
+python server "command"
+
+
