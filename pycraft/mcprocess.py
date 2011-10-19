@@ -30,12 +30,13 @@ import re
 class MCProcess:
 
     def help( self ):
-        print( "Version: DEVELOPMENT PREVIEW" )
-        print( "help    - Displays this message" )
-        print( "help mc - Displays minecrafts help" )
-        print( "start   - Starts the minecraft server" )
-        print( "stop    - Stops the minecraft server" )
-        print( "upgrade - Upgrades the minecraft server" )
+        msg = "Version: DEVELOPMENT PREVIEW\n"
+        msg += "help    - Displays this message\n"
+        msg += "help mc - Displays minecrafts help\n"
+        msg += "start   - Starts the minecraft server\n"
+        msg += "stop    - Stops the minecraft server\n"
+        msg += "upgrade - Upgrades the minecraft server"
+        return msg
 
     def __init__( self ):
         self.server_jar = 'minecraft_server.jar'
