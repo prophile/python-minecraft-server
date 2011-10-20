@@ -122,7 +122,7 @@ class MCProcess:
         self._mcp_reader.join()
         self._mcp_reader = None
         print( "Server stopped" )
-        return 'Server stopped
+        return 'Server stopped'
 
     """
     Sends a command to the minecraft server
