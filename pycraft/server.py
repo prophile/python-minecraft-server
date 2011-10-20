@@ -68,8 +68,6 @@ class Server:
                     continue
 
                 self.process_input( data )
-                if data == "quit":
-                    break
         except KeyboardInterrupt:
             print( "^C caught, stopping..." )
             self.mcprocess.stop()
@@ -96,7 +94,9 @@ class Server:
             print("Stopppign")
             self.mcprocess.stop()
         elif user_input == 'quit':
-            self.mcprocess.quit()
+            self.mcprocess.stop()
+            sendmessage( "Minecraft stopped" )
+            sys.exit()
         elif user_input == 'upgrade':
             self.mcprocess.upgrade()
         elif user_input == 'help':
