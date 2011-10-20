@@ -1,0 +1,5 @@
+*.pyc
+*~
+minecraft/
+__pycache__/
+*.swp
