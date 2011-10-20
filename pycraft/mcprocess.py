@@ -129,10 +129,11 @@ class MCProcess:
     """
     def send( self, message ):
         if self._mcp == None:
-            return
+            return 'Minecraft server not started'
         message += '\n'
         self._mcp.stdin.write( message.encode('latin-1') )
         self._mcp.stdin.flush()
+        return message + " sent to minecraft server"
 
     def check_jar( self ):
         print ( "Current dir: ", os.getcwd() )
