@@ -166,12 +166,13 @@ class MCProcess:
         
         #handle errors
         except HTTPError as e:
-            print( "HTTP Error:", e.reason, url )
+            retmsg = "HTTP Error:", e.reason, url
         except URLError as e:
-            print( "URL Error:", e.reason, url )
+            retmsg = "URL Error:", e.reason, url
         finally:
             if local:
                 local.close()
+            return retmsg
 
 if __name__ == "__main__":
     p = MCProcess()
