@@ -24,8 +24,8 @@ import mcprocess
 
 class Server:
     """
-    Handels running the server as a deamon and sending messages to the deamon
-    and sending messages to the deamon as a client.
+    Handles running the server as a daemon and sending messages to the daemon
+    and sending messages to the daemon as a client.
     """
 
     host = 'localhost'
@@ -91,7 +91,7 @@ class Server:
         if user_input == 'start':
             self.mcprocess.start()
         elif user_input == 'stop':
-            print("Stopppign")
+            print("Stopping")
             self.mcprocess.stop()
         elif user_input == 'quit':
             self.mcprocess.stop()
@@ -107,7 +107,7 @@ class Server:
             else:
                 self.mcprocess.send( 'help' )
         else:
-            print( "Command not reconised, sending to mincraft server" )
+            print( "Command not recognised, sending to minecraft server" )
             self.mcprocess.send( user_input )
 
 
@@ -118,4 +118,4 @@ if __name__ == "__main__":
         else:
             s = Server( message = sys.argv[1] )
     else:
-        print( "Thats not how you use this program!!" )
+        print( "That's not how you use this program!!" )
