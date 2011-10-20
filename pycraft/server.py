@@ -21,6 +21,7 @@ Copyright (C) 2011 Michael Daffin
 import socket
 import sys
 import mcprocess
+import re
 
 class Server:
     """
@@ -82,33 +83,50 @@ class Server:
         if not self.sock.sendto( message.encode( 'utf-8' ), self.addr ):
             print( "Error, could not send message" )
             return
-        data,self.addr = self.sock.recvfrom( self.buf ) #TODO timeout
-        data = data.decode( 'utf-8' )
-        print( data )
+        self.sock.settimeout(20)
+        while True:
+            message,self.addr = self.sock.recvfrom( self.buf )
+            message = message.decode( 'utf-8' )
+            if message == "DONE":
+                break
+            if re.search( "^SET", message ):
+                s = message.split()
+                if s[1] == "TIMEOUT":
+                    self.sock.settimeout( int(s[2]) )
+                continue
+            print( message )
+
+    def reply( self, message ):
+        if not self.sock.sendto( message.encode( 'utf-8' ), self.returnaddr ):
+            print( "Error, could not send message" )
 
     def process_input( self, user_input ):
         user_input = user_input.strip()
         if user_input == 'start':
-            self.mcprocess.start()
+            self.reply( self.mcprocess.start() )
         elif user_input == 'stop':
-            print("Stopping")
-            self.mcprocess.stop()
+            self.reply( self.mcprocess.stop() )
+        elif user_input == 'restart':
+            self.reply( self.mcprocess.stop() )
+            self.reply( self.mcprocess.start() )
         elif user_input == 'quit':
-            self.mcprocess.stop()
-            sendmessage( "Minecraft stopped" )
+            self.reply( self.mcprocess.stop() )
             sys.exit()
         elif user_input == 'upgrade':
-            self.mcprocess.upgrade()
+            self.reply( "Downloading upgrade" )
+            self.reply( "SET TIMEOUT 120" )
+            self.reply( self.mcprocess.upgrade() )
         elif user_input == 'help':
-            print( self.mcprocess.help() )
+            self.reply( self.mcprocess.help() )
         elif user_input == 'help mc':
             if not self.mcprocess._mcp:
-                sys.stderr.write( 'Server must be running to display help\n' )
+                self.reply( 'Server must be running to display help\n' )
             else:
-                self.mcprocess.send( 'help' )
+                self.reply( self.mcprocess.send( 'help' ) )
         else:
-            print( "Command not recognised, sending to minecraft server" )
-            self.mcprocess.send( user_input )
+            self.reply( self.mcprocess.send( user_input ) )
+        self.reply( "DONE" )
+
 
 
 if __name__ == "__main__":
