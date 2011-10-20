@@ -114,14 +114,15 @@ class MCProcess:
     def stop( self ):
         print( self._mcp )
         if self._mcp == None:
-            sys.stderr.write( 'Server not running\n' )
-            return
-        sys.stdout.write( 'Shutting down server...\n' )
+            print( 'Server not running' )
+            return 'Server not running'
         self.send( 'stop' )
         self._mcp.wait()
         self._mcp = None
         self._mcp_reader.join()
         self._mcp_reader = None
+        print( "Server stopped" )
+        return 'Server stopped
 
     """
     Sends a command to the minecraft server
