@@ -65,8 +65,11 @@ class MCProcess:
             line = self._mcp.stdout.readline()
             string = line.decode( "utf-8" )
             if re.search( "^>\\r", string ):
-                sys.stdout.write( string )
-                sys.stdout.flush()
+                # Remoeve >\r
+                string = string.lstrip( ">" )
+                string = string.rstrip( "\r" )
+                string = string.rstrip( "\n" )
+                print( string )
 
     """
     Starts the minecraft server
