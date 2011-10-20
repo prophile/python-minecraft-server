@@ -60,11 +60,11 @@ class Server:
 
         try:
             while True:
-                data,addr = self.sock.recvfrom( self.buf )
+                data,self.returnaddr = self.sock.recvfrom( self.buf )
                 data = data.decode( 'utf-8' )
 
                 if not data:
-                    print( "No data received from connection from", addr )
+                    print( "No data received from connection from", self.returnaddr )
                     continue
 
                 self.process_input( data )
