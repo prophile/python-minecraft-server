@@ -124,13 +124,6 @@ class MCProcess:
         self._mcp_reader = None
 
     """
-    Stops the minecraft server then exits
-    """
-    def quit( self, value=0):
-        self.stop()
-        sys.exit( value )
-
-    """
     Sends a command to the minecraft server
     """
     def send( self, message ):
