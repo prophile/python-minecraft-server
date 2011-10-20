@@ -122,7 +122,7 @@ class Server:
             self.reply( self.mcprocess.help() )
         elif user_input == 'help mc':
             if not self.mcprocess._mcp:
-                self.reply( 'Server must be running to display help\n' )
+                self.reply( 'Server must be running to display help' )
             else:
                 self.reply( self.mcprocess.send( 'help' ) )
         else:
