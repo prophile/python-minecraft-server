@@ -20,7 +20,7 @@ Copyright (C) 2011 Michael Daffin
 """
 import socket
 import sys
-from pycraft import mcprocess
+from pythoncraft import mcprocess
 import re
 
 class Server:

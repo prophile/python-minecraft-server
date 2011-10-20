@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from pycraft import server
+from pythoncraft import server
 import sys
 
 if __name__ == "__main__":
