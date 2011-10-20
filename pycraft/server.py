@@ -111,6 +111,8 @@ class Server:
             self.reply( self.mcprocess.start() )
         elif user_input == 'quit':
             self.reply( self.mcprocess.stop() )
+            self.reply( "Server terminating" )
+            self.reply( "DONE" )
             sys.exit()
         elif user_input == 'upgrade':
             self.reply( "Downloading upgrade" )
