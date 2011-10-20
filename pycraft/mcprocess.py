@@ -77,17 +77,17 @@ class MCProcess:
     def start( self ):
         if self._mcp != None:
             sys.stderr.write( 'Error: Server already running\n' )
-            return
+            return 'Server already running'
 
         if not self.check_jar():
-            return
+            return 'Could not fund jar'
 
-        print( "Starting minecraft server" )
         self._mcp = subprocess.Popen( config.java_exec + " " + config.java_flags + ' -jar ' + self.server_jar + " nogui", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
 
         self._mcp_reader = threading.Thread( target=self._mc_output_loop )
         self._mcp_reader.start()
-        
+        print( "Starting minecraft server" )
+        return 'Starting minecraft server'
 
     """
     Checks for the first run and sets up anything that needs to be set up
