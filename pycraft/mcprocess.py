@@ -23,7 +23,7 @@ import sys
 import subprocess
 import urllib.request
 from urllib.error import HTTPError, URLError
-import config
+from pycraft import config
 import threading
 import re
 
