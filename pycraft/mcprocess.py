@@ -146,9 +146,6 @@ class MCProcess:
 
 
     def upgrade( self ):
-        if self._mcp:
-            sys.stderr.write( 'Error: Server is running, please shut it down before upgradeing\n' )
-            return
         url = config.url[ config.server_type ]
         local = None
         try:
@@ -159,6 +156,10 @@ class MCProcess:
             local = open( self.server_jar, "wb" )
             local.write( f.read() )
             print( " done" )
+            retmsg = "Download completed. "
+            if self._mcp:
+                retmsg += "Restart the minecraft sever to use the new version"
+            return retmsg
         
         #handle errors
         except HTTPError as e:
