@@ -153,8 +153,11 @@ class MCProcess:
             sys.stdout.flush()
             f = urllib.request.urlopen( url )
 
-            local = open( self.server_jar, "wb" )
+            newjar = self.server_jar + ".new"
+            local = open( newjar, "wb" )
             local.write( f.read() )
+            os.rename( newjar, self.server_jar )
+
             print( " done" )
             retmsg = "Download completed. "
             if self._mcp:
