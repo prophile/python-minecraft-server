@@ -58,19 +58,22 @@ class Server:
         self.sock.bind(self.addr)
         self.mcprocess = mcprocess.MCProcess()
 
-        while True:
-            data,addr = self.sock.recvfrom( self.buf )
-            data = data.decode( 'utf-8' )
+        try:
+            while True:
+                data,addr = self.sock.recvfrom( self.buf )
+                data = data.decode( 'utf-8' )
 
-            if not data:
-                print( "No data recieved from connection from", addr )
-                continue
+                if not data:
+                    print( "No data received from connection from", addr )
+                    continue
 
-            self.process_input( data )
-            if not self.sock.sendto( "reieved".encode( 'utf-8' ), addr ):
-                print( "Error, could not send message" )
-            if data == "quit":
-                break
+                self.process_input( data )
+                if data == "quit":
+                    break
+        except KeyboardInterrupt:
+            print( "^C caught, stopping..." )
+            self.mcprocess.stop()
+            sys.exit(1)
 
     def sendmessage( self, message ):
         """
