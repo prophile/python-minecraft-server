@@ -57,7 +57,8 @@ class MCProcess:
                     #self.process_input( input )
                     print( "Feature removed" )
             except KeyboardInterrupt:
-                self.quit()
+                self.stop()
+                sys.exit(1)
 
     def _mc_output_loop( self ):
         while self._mcp:
