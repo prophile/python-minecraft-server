@@ -7,6 +7,6 @@ setup(
     author='Michael Daffin',
     author_email='james1479@gmail.com',
     url='',
-    packages=['pycraft'],
-    scripts=['pycraft.py']
+    packages=['pythoncraft'],
+    scripts=['pycraft']
 )
