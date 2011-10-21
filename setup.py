@@ -7,5 +7,6 @@ setup(
     author='Michael Daffin',
     author_email='james1479@gmail.com',
     url='',
-    packages=find_packages()
+    packages=['pycraft'],
+    scripts=['pycraft.py']
 )
