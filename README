@@ -1,9 +1,14 @@
 PythonCraft
 ===========
 
+Requirements
+============
+python3
+java runtime envroment
+
 Installation
 ============
-python ...
+python3 setup.py
 
 Usage
 =====
