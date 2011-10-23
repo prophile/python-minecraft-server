@@ -67,6 +67,9 @@ class ServerHandler( socketserver.StreamRequestHandler ):
         elif user_input == 'upgrade':
             self.write( "Downloading upgrade" )
             self.write( self.server.mcp.upgrade() )
+        elif user_input == 'status':
+            self.write( 'Pycraft server is running' )
+            self.write( self.server.mcp.status() )
         elif user_input == 'help':
             self.write( self.server.mcp.help() )
         elif user_input == 'help mc':
