@@ -48,7 +48,7 @@ class ServerHandler( socketserver.StreamRequestHandler ):
         self.process_input( self.data.decode( "utf8" ) )
 
     def write( self, msg ):
-        self.wfile.write( bytes( msg + "\n", "utf8" ) )
+        self.wfile.write( bytes( str(msg) + "\n", "utf8" ) )
 
     def process_input( self, user_input ):
         user_input = user_input.strip()
