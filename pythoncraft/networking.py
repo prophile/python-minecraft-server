@@ -45,7 +45,12 @@ class ServerHandler( socketserver.StreamRequestHandler ):
         self.data = self.rfile.readline().strip()
         print( "%s wrote:" % self.client_address[0] )
         print( self.data )
-        self.process_input( self.data.decode( "utf8" ) )
+        try:
+            self.process_input( self.data.decode( "utf8" ) )
+        except Exception as e:
+            self.write( e )
+        finally:
+            self.write( "DONE" )
 
     def write( self, msg ):
         self.wfile.write( bytes( str(msg) + "\n", "utf8" ) )
@@ -82,7 +87,6 @@ class ServerHandler( socketserver.StreamRequestHandler ):
                 self.write( 'Minecraft server must be running to send commands to it' )
             else:
                 self.write( self.server.mcp.send( user_input ) )
-        self.write( "DONE" )
 
 class Client:
     def __init__( self, message ):
