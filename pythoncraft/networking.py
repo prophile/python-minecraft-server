@@ -79,7 +79,12 @@ class Client:
 
         self.sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
 
-        self.sock.connect( ( host, port ) )
+        try:
+            self.sock.connect( ( host, port ) )
+        except socket.error as e:
+            print( "Could not connect to daemon." )
+            print( "Run pycraft -d to start pycraft as a daemon first." )
+            sys.exit(1)
         self.write( data )
         self.cfile = self.sock.makefile()
 
