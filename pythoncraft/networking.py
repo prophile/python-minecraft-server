@@ -27,10 +27,12 @@ host = 'localhost'
 
 class Server:
     def __init__( self ):
-        server = socketserver.TCPServer( (host, port), ServerHandler )
-        server.allow_reuse_address = True
+        server = ThreaddedServer( (host, port), ServerHandler )
         server.mcp = mcprocess.MCProcess()
         server.serve_forever()
+
+class ThreaddedServer( socketserver.ThreadingMixIn, socketserver.TCPServer ):
+    allow_reuse_address = True
 
 class ServerHandler( socketserver.StreamRequestHandler ):
     
