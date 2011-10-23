@@ -54,7 +54,7 @@ class ServerHandler( socketserver.StreamRequestHandler ):
         user_input = user_input.strip()
         if user_input == 'start':
             self.write( self.server.mcp.start() )
-        elif user_input == 'stop':
+        elif user_input.startswith( 'stop' ):
             self.write( self.server.mcp.stop() )
         elif user_input == 'restart':
             self.write( self.server.mcp.stop() )
