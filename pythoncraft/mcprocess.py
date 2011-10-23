@@ -75,7 +75,7 @@ class MCProcess:
             if re.search( "^>\\r", string ):
                 # Remoeve >\r
                 string = string.lstrip( ">" )
-                string = string.rstrip( "\r" )
+                string = string.lstrip( "\r" )
                 string = string.rstrip( "\n" )
                 #print( string )
                 self.logger.info( string )
