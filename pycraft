@@ -6,6 +6,8 @@ import sys
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
         if sys.argv[1] == "-d":
+            from pythoncraft import daemon
+            daemon.createDaemon()
             s = networking.Server()
         else:
             s = networking.Client( message = sys.argv[1:] )
