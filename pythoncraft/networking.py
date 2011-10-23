@@ -82,9 +82,11 @@ class Client:
         try:
             self.sock.connect( ( host, port ) )
         except socket.error as e:
-            print( "Could not connect to daemon." )
-            print( "Run pycraft -d to start pycraft as a daemon first." )
-            sys.exit(1)
+            if e.errno == 111:
+                print( "Could not connect to daemon." )
+                print( "Run pycraft -d to start pycraft as a daemon first." )
+                sys.exit(1)
+            raise e
         self.write( data )
         self.cfile = self.sock.makefile()
 
