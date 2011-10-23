@@ -78,7 +78,10 @@ class ServerHandler( socketserver.StreamRequestHandler ):
             else:
                 self.write( self.server.mcp.send( 'help' ) )
         else:
-            self.write( self.server.mcp.send( user_input ) )
+            if not self.server.mcp._mcp:
+                self.write( 'Minecraft server must be running to send commands to it' )
+            else:
+                self.write( self.server.mcp.send( user_input ) )
         self.write( "DONE" )
 
 class Client:
