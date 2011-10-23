@@ -21,7 +21,10 @@ import socketserver
 import socket
 import sys
 from pythoncraft import mcprocess
-from pythoncraft.common import host,port,messages
+
+port = 55242
+host = 'localhost'
+
 class Server:
     def __init__( self ):
         server = socketserver.TCPServer( (host, port), ServerHandler )
