@@ -85,7 +85,7 @@ class Client:
 
         while True:
             msg = self.read()
-            if msg == messages.done:
+            if msg == "DONE":
                 break
             print( "Got: %s" % msg )
 
