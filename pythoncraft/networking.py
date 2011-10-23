@@ -27,7 +27,12 @@ host = 'localhost'
 
 class Server:
     def __init__( self ):
-        server = ThreaddedServer( (host, port), ServerHandler )
+        try:
+            server = ThreaddedServer( (host, port), ServerHandler )
+        except socket.error as e:
+            if e.errno == 98:
+                print( "Server is already running" )
+            sys.exit(1)
         server.mcp = mcprocess.MCProcess()
         server.serve_forever()
 
