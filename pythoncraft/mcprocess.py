@@ -26,6 +26,7 @@ from urllib.error import HTTPError, URLError
 from pythoncraft import config
 import threading
 import re
+import logging
 
 class MCProcess:
 
@@ -39,6 +40,13 @@ class MCProcess:
         return msg
 
     def __init__( self ):
+        self.logger = logging.getLogger('pycraft')
+        hdlr = logging.FileHandler('/var/log/pycraft.log')
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        hdlr.setFormatter(formatter)
+        self.logger.addHandler(hdlr) 
+        self.logger.setLevel(logging.INFO)
+
         self.server_jar = 'minecraft_server.jar'
         self._mcp = None
 
@@ -69,7 +77,8 @@ class MCProcess:
                 string = string.lstrip( ">" )
                 string = string.rstrip( "\r" )
                 string = string.rstrip( "\n" )
-                print( string )
+                #print( string )
+                self.logger.info( string )
 
     def status( self ):
         retval = "Minecraft server is "
