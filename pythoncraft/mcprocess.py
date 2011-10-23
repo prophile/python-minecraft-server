@@ -71,6 +71,13 @@ class MCProcess:
                 string = string.rstrip( "\n" )
                 print( string )
 
+    def status( self ):
+        retval = "Minecraft server is "
+        if not self._mcp:
+            retval += "not "
+        retval += "running"
+        return retval
+
     """
     Starts the minecraft server
     """
